@@ -18,6 +18,9 @@ fn main() -> io::Result<()> {
         "help" | "-h" => {
             //HELP COMMAND
         }
+        "version" | "-v" => {
+            //VERSION
+        }
         _ => {}
     }
 
