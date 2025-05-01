@@ -3,9 +3,12 @@ use std::io;
 use std::net::IpAddr;
 use std::os::unix::net::UnixDatagram;
 use std::str::FromStr;
+use std::time::{SystemTime, UNIX_EPOCH};
 use rlibbencode::variables::bencode_object::{BencodeObject, PutObject};
 use rlibbencode::variables::inter::bencode_variable::BencodeVariable;
+use crate::utils::unix_rpc::send;
 
+const UNIX_RPC_CLIENT_PATH: &str = "/tmp/find9_client.sock";
 const UNIX_RPC_PATH: &str = "/tmp/find9.sock";
 
 pub fn command(args: &[String]) -> io::Result<()> {
@@ -16,15 +19,7 @@ pub fn command(args: &[String]) -> io::Result<()> {
             bencode.put("t", args.first().unwrap().as_str());
             bencode.put("q", args_to_record(&args[1..])?);
 
-            println!("{}", bencode.to_string());
-
-            let socket = UnixDatagram::unbound()?;//UnixDatagram::conn(UNIX_RPC_PATH)?;
-            socket.send_to(&bencode.encode(), UNIX_RPC_PATH)?;
-
-            let mut buf = [0u8; 65535];
-            socket.recv(&mut buf)?;
-
-            let bencode = BencodeObject::decode(&buf)?;
+            let bencode = send(bencode)?;
             println!("{}", bencode.to_string());
         }
         "help" | "-h" => {

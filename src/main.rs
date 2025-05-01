@@ -1,4 +1,5 @@
 mod commands;
+mod utils;
 
 use std::{env, io};
 use std::io::ErrorKind;
