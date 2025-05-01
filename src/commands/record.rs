@@ -3,7 +3,6 @@ use std::io;
 use std::net::IpAddr;
 use std::str::FromStr;
 use rlibbencode::variables::bencode_object::{BencodeObject, PutObject};
-use rlibbencode::variables::inter::bencode_variable::BencodeVariable;
 use crate::utils::unix_rpc::send;
 
 pub fn command(args: &[String]) -> io::Result<()> {
