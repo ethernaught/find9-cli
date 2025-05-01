@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::io;
 use std::net::IpAddr;
-use std::os::unix::net::{UnixDatagram, UnixStream};
+use std::os::unix::net::UnixDatagram;
 use std::str::FromStr;
 use rlibbencode::variables::bencode_object::{BencodeObject, PutObject};
 use rlibbencode::variables::inter::bencode_variable::BencodeVariable;
