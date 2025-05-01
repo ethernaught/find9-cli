@@ -4,3 +4,4 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+rlibbencode = { git = "https://github.com/sectorrent/rlibbencode" }

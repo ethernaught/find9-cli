@@ -5,3 +5,11 @@ version = 4
 [[package]]
 name = "find9-cli"
 version = "0.1.0"
+dependencies = [
+ "rlibbencode",
+]
+
+[[package]]
+name = "rlibbencode"
+version = "0.1.0"
+source = "git+https://github.com/sectorrent/rlibbencode#5a6b1631c64faaf81c625b8b9c7a22fe1f3ec9e3"

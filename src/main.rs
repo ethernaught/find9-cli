@@ -2,7 +2,7 @@ mod commands;
 
 use std::{env, io};
 use std::io::ErrorKind;
-use crate::commands::record::record_commands;
+use crate::commands::general::command;
 
 fn main() -> io::Result<()> {
     let args: Vec<String> = env::args().skip(1).collect();
@@ -11,18 +11,7 @@ fn main() -> io::Result<()> {
         return Err(io::Error::new(ErrorKind::NotFound, "Missing arguments"));
     }
 
-    match args.first().unwrap().as_str() {
-        "record" => {
-            record_commands(&args[1..])?;
-        }
-        "help" | "-h" => {
-            //HELP COMMAND
-        }
-        "version" | "-v" => {
-            //VERSION
-        }
-        _ => {}
-    }
+    command(&args)?;
 
     //UNIX-STREAM WILL HANDLE
 
