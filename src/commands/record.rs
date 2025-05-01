@@ -7,7 +7,7 @@ use crate::utils::unix_rpc::send;
 
 pub fn command(args: &[String]) -> io::Result<()> {
     match args.first().unwrap().as_str() {
-        "add" | "get" | "remove" => {
+        "create" | "get" | "remove" => {
             let mut bencode = BencodeObject::new();
             bencode.put("v", env!("CARGO_PKG_VERSION"));
             bencode.put("t", args.first().unwrap().as_str());
@@ -34,7 +34,7 @@ pub fn command(args: &[String]) -> io::Result<()> {
 
 pub fn commands() -> String {
     String::from("Record Commands:\r\n  \
-    add\t\t\tAdd a record to the DNS table\r\n  \
+    create\t\t\tCreate a record to the DNS table\r\n  \
     get\t\t\tGet a record from the DNS table\r\n  \
     remove\t\tRemove a record from the DNS table")
 }

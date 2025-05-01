@@ -32,7 +32,7 @@ pub fn command(args: &[String]) -> io::Result<()> {
 
 pub fn commands() -> String {
     String::from("General Commands:\r\n  \
-    record\t\tAdd, Get, Remove DNS records\r\n  \
+    record\t\tCreate, Get, Remove DNS records\r\n  \
     user\t\t\tCreate, Edit, Delete user\r\n  \
     block\t\t\tBlock IP Address\r\n  \
     unblock\t\tUnblock IP Address\r\n  \
