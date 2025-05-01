@@ -1,15 +1,10 @@
 use std::collections::HashMap;
 use std::io;
 use std::net::IpAddr;
-use std::os::unix::net::UnixDatagram;
 use std::str::FromStr;
-use std::time::{SystemTime, UNIX_EPOCH};
 use rlibbencode::variables::bencode_object::{BencodeObject, PutObject};
 use rlibbencode::variables::inter::bencode_variable::BencodeVariable;
 use crate::utils::unix_rpc::send;
-
-const UNIX_RPC_CLIENT_PATH: &str = "/tmp/find9_client.sock";
-const UNIX_RPC_PATH: &str = "/tmp/find9.sock";
 
 pub fn command(args: &[String]) -> io::Result<()> {
     match args.first().unwrap().as_str() {
@@ -20,7 +15,12 @@ pub fn command(args: &[String]) -> io::Result<()> {
             bencode.put("q", args_to_record(&args[1..])?);
 
             let bencode = send(bencode)?;
-            println!("{}", bencode.to_string());
+            match bencode.get_number::<u16>("s")? {
+                0 => {}
+                (s) => {
+                    println!("Error: status: {}", s);
+                }
+            }
         }
         "help" | "-h" => {
             println!("{}\r\n", commands());
