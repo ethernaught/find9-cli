@@ -1,32 +1,37 @@
 use std::collections::HashMap;
 use std::io;
 use std::net::IpAddr;
+use std::os::unix::net::{UnixDatagram, UnixStream};
 use std::str::FromStr;
 use rlibbencode::variables::bencode_object::{BencodeObject, PutObject};
 use rlibbencode::variables::inter::bencode_variable::BencodeVariable;
 
 pub fn command(args: &[String]) -> io::Result<()> {
-    let mut bencode = BencodeObject::new();
-    bencode.put("v", "0.1.0");
-    bencode.put("t", args.first().unwrap().as_str());
-
     match args.first().unwrap().as_str() {
-        "add" => {
+        "add" | "get" | "remove" => {
+            let mut bencode = BencodeObject::new();
+            bencode.put("v", env!("CARGO_PKG_VERSION"));
+            bencode.put("t", args.first().unwrap().as_str());
             bencode.put("q", args_to_record(&args[1..])?);
-        }
-        "get" => {
 
-        }
-        "remove" => {
+            println!("{}", bencode.to_string());
 
+            let socket = UnixDatagram::bind("/var/run/find9.sock")?;
+            socket.send(&bencode.encode())?;
+
+            let mut buf = [0u8; 65535];
+            socket.recv(&mut buf)?;
+
+            let bencode = BencodeObject::decode(&buf)?;
+            println!("{}", bencode.to_string());
         }
         "help" | "-h" => {
-            println!("{}", commands());
+            println!("{}\r\n", commands());
+            println!("{}", arguments());
+            return Ok(());
         }
         _ => return Err(io::Error::new(io::ErrorKind::NotFound, "Invalid argument")),
     }
-
-    println!("{}", bencode.to_string());
 
     Ok(())
 }
