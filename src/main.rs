@@ -11,7 +11,7 @@ fn main() -> io::Result<()> {
     let args: Vec<String> = env::args().skip(1).collect();
 
     if args.is_empty() {
-        return Err(io::Error::new(ErrorKind::NotFound, "Missing arguments"));
+        return command(&[String::from("-h")]);
     }
 
     command(&args)
