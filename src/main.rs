@@ -14,11 +14,5 @@ fn main() -> io::Result<()> {
         return Err(io::Error::new(ErrorKind::NotFound, "Missing arguments"));
     }
 
-    command(&args)?;
-
-    //let stream = UnixStream::connect("/tmp/find9.sock").unwrap();
-
-
-
-    Ok(())
+    command(&args)
 }
