@@ -6,6 +6,8 @@ use std::str::FromStr;
 use rlibbencode::variables::bencode_object::{BencodeObject, PutObject};
 use rlibbencode::variables::inter::bencode_variable::BencodeVariable;
 
+const UNIX_RPC_PATH: &str = "/tmp/find9.sock";
+
 pub fn command(args: &[String]) -> io::Result<()> {
     match args.first().unwrap().as_str() {
         "add" | "get" | "remove" => {
@@ -16,8 +18,8 @@ pub fn command(args: &[String]) -> io::Result<()> {
 
             println!("{}", bencode.to_string());
 
-            let socket = UnixDatagram::bind("/var/run/find9.sock")?;
-            socket.send(&bencode.encode())?;
+            let socket = UnixDatagram::unbound()?;//UnixDatagram::conn(UNIX_RPC_PATH)?;
+            socket.send_to(&bencode.encode(), UNIX_RPC_PATH)?;
 
             let mut buf = [0u8; 65535];
             socket.recv(&mut buf)?;
