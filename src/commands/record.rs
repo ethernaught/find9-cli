@@ -14,7 +14,7 @@ pub fn command(args: &[String]) -> io::Result<()> {
             bencode.put("q", args_to_record(&args[1..])?);
 
             let bencode = send(bencode)?;
-            match bencode.get_number::<u16>("s")? {
+            match bencode.get_number::<u16>("s").ok_or_else(|| io::Error::new(io::ErrorKind::NotFound, "Status not found"))? {
                 0 => {}
                 (s) => {
                     println!("Error: status: {}", s);
