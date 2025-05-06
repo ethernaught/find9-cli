@@ -56,7 +56,7 @@ pub fn arguments() -> String {
     String::from("Record Options:\r\n  \
     -r\t\t\tRecord Type\r\n  \
     -c\t\t\tDNS Class Type\r\n  \
-    -domain\t\tDomain name\r\n  \
+    -name\t\tName\r\n  \
     -address\t\tIP Address\r\n  \
     -ttl\t\t\tTTL (Time To Live)\r\n  \
     -cache_flush\t\tCache flush toggle (true/false)\r\n  \
@@ -70,6 +70,7 @@ fn args_to_record(args: &[String]) -> io::Result<BencodeObject> {
     let arg_to_key: HashMap<&str, ArgMeta> = HashMap::from([
         ("-r", ArgMeta::new("record", ArgTypes::Bytes)),
         ("-c", ArgMeta::new("class", ArgTypes::Bytes)),
+        ("-name", ArgMeta::new("name", ArgTypes::Bytes)),
         ("-domain", ArgMeta::new("domain", ArgTypes::Bytes)),
         ("-address", ArgMeta::new("address", ArgTypes::Address)),
         ("-ttl", ArgMeta::new("ttl", ArgTypes::Number)),
