@@ -12,4 +12,4 @@ dependencies = [
 [[package]]
 name = "rlibbencode"
 version = "0.1.0"
-source = "git+https://github.com/sectorrent/rlibbencode#e0957f0f1d1c394107513054986069837e8ffe2e"
+source = "git+https://github.com/sectorrent/rlibbencode#e829be41d62bf772d9e086bb7a5417b5d4102a03"

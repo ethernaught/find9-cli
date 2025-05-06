@@ -2,19 +2,32 @@ use std::collections::HashMap;
 use std::io;
 use std::net::IpAddr;
 use std::str::FromStr;
-use rlibbencode::variables::bencode_object::{BencodeObject, PutObject};
+use rlibbencode::bencode;
+use rlibbencode::variables::bencode_number::BencodeNumber;
+use rlibbencode::variables::bencode_object::{BencodeObject, GetObject, PutObject};
+use rlibbencode::variables::inter::bencode_variable::BencodeVariable;
 use crate::utils::unix_rpc::send;
 
 pub fn command(args: &[String]) -> io::Result<()> {
     match args.first().unwrap().as_str() {
         "create" | "get" | "remove" => {
-            let mut bencode = BencodeObject::new();
-            bencode.put("v", env!("CARGO_PKG_VERSION"));
-            bencode.put("t", args.first().unwrap().as_str());
-            bencode.put("q", args_to_record(&args[1..])?);
+            //let mut bencode = BencodeObject::new();
+            //bencode.put("v", env!("CARGO_PKG_VERSION"));
+            //bencode.put("t", args.first().unwrap().as_str());
+            //bencode.put("q", args_to_record(&args[1..])?);
+
+            let v = env!("CARGO_PKG_VERSION");
+            let t = args.first().unwrap().as_str();
+            let q = args_to_record(&args[1..])?;
+
+            let bencode = bencode!({
+                "v": v,
+                "t": t,
+                "q": q
+            });
 
             let bencode = send(bencode)?;
-            match bencode.get_number::<u16>("s").ok_or_else(|| io::Error::new(io::ErrorKind::NotFound, "Status not found"))? {
+            match bencode.get::<BencodeNumber>("s").ok_or_else(|| io::Error::new(io::ErrorKind::NotFound, "Status not found"))?.parse::<u16>().unwrap() {
                 0 => {}
                 (s) => {
                     println!("Error: status: {}", s);
