@@ -25,6 +25,7 @@ pub fn command(args: &[String]) -> io::Result<()> {
                 "t": t,
                 "q": q
             });
+            //println!("{}", bencode);
 
             let bencode = send(bencode)?;
             match bencode.get::<BencodeNumber>("s").ok_or_else(|| io::Error::new(io::ErrorKind::NotFound, "Status not found"))?.parse::<u16>().unwrap() {
@@ -47,7 +48,7 @@ pub fn command(args: &[String]) -> io::Result<()> {
 
 pub fn commands() -> String {
     String::from("Record Commands:\r\n  \
-    create\t\t\tCreate a record to the DNS table\r\n  \
+    create\t\tCreate a record to the DNS table\r\n  \
     get\t\t\tGet a record from the DNS table\r\n  \
     remove\t\tRemove a record from the DNS table")
 }
@@ -56,10 +57,19 @@ pub fn arguments() -> String {
     String::from("Record Options:\r\n  \
     -r\t\t\tRecord Type\r\n  \
     -c\t\t\tDNS Class Type\r\n  \
-    -name\t\tName\r\n  \
-    -address\t\tIP Address\r\n  \
     -ttl\t\t\tTTL (Time To Live)\r\n  \
-    -cache_flush\t\tCache flush toggle (true/false)\r\n  \
+    -name\t\t\tName\r\n  \
+    -address\t\tIP Address\r\n  \
+    -flags\t\tFlags\r\n  \
+    -protocol\t\tProtocol\r\n  \
+    -algorithm\t\tAlgorithm\r\n  \
+    -public_key\t\tPublic Key in Base64\r\n  \
+    -priority\t\tPriority\r\n  \
+    -server\t\tServer\r\n  \
+    -domain\t\tDomain\r\n  \
+    -weight\t\tWeight\r\n  \
+    -port\t\t\tPort\r\n  \
+    -content\t\tContent\r\n  \
     -local\t\tLAN only toggle (true/false)\r\n  \
     -external\t\tExternal only toggle (true/false)")
 }
@@ -71,10 +81,19 @@ fn args_to_record(args: &[String]) -> io::Result<BencodeObject> {
         ("-r", ArgMeta::new("record", ArgTypes::Bytes)),
         ("-c", ArgMeta::new("class", ArgTypes::Bytes)),
         ("-name", ArgMeta::new("name", ArgTypes::Bytes)),
-        ("-domain", ArgMeta::new("domain", ArgTypes::Bytes)),
-        ("-address", ArgMeta::new("address", ArgTypes::Address)),
         ("-ttl", ArgMeta::new("ttl", ArgTypes::Number)),
-        ("-cache_flush", ArgMeta::new("cache_flush", ArgTypes::Bool)),
+        ("-address", ArgMeta::new("address", ArgTypes::Address)),
+        ("-target", ArgMeta::new("target", ArgTypes::Bytes)),
+        ("-flags", ArgMeta::new("flags", ArgTypes::Number)),
+        ("-protocol", ArgMeta::new("protocol", ArgTypes::Number)),
+        ("-algorithm", ArgMeta::new("algorithm", ArgTypes::Number)),
+        ("-public_key", ArgMeta::new("public_key", ArgTypes::Bytes)),
+        ("-priority", ArgMeta::new("priority", ArgTypes::Number)),
+        ("-server", ArgMeta::new("server", ArgTypes::Bytes)),
+        ("-domain", ArgMeta::new("domain", ArgTypes::Bytes)),
+        ("-weight", ArgMeta::new("weight", ArgTypes::Number)),
+        ("-port", ArgMeta::new("port", ArgTypes::Number)),
+        ("-content", ArgMeta::new("content", ArgTypes::Bytes)),
         ("-local", ArgMeta::new("local", ArgTypes::Bool))
     ]);
 
