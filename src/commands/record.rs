@@ -25,11 +25,13 @@ pub fn command(args: &[String]) -> io::Result<()> {
                 "t": t,
                 "q": q
             });
-            //println!("{}", bencode);
+            println!("{}", bencode);
 
             let bencode = send(bencode)?;
-            match bencode.get::<BencodeNumber>("s").ok_or_else(|| io::Error::new(io::ErrorKind::NotFound, "Status not found"))?.parse::<u16>().unwrap() {
-                0 => {}
+            match bencode.get::<BencodeNumber>("s").ok_or_else(|| io::Error::new(io::ErrorKind::NotFound, "Status not found"))?.parse::<u16>()? {
+                0 => {
+                    println!("{}", bencode);
+                }
                 (s) => {
                     println!("Error: status: {}", s);
                 }
