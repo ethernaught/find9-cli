@@ -62,6 +62,7 @@ pub fn arguments() -> String {
     -ttl\t\t\tTTL (Time To Live)\r\n  \
     -name\t\t\tName\r\n  \
     -address\t\tIP Address\r\n  \
+    -target\t\tTarget name\r\n  \
     -flags\t\tFlags\r\n  \
     -protocol\t\tProtocol\r\n  \
     -algorithm\t\tAlgorithm\r\n  \
